@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 export class ToDoRow extends Component {
 
     // There are 2 different kinds of PROPS
