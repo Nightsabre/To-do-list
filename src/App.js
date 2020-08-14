@@ -3,8 +3,8 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import {ToDoBanner} from './ToDoBanner';
-import {ToDoRow} from './ToDoRow';
+import { ToDoBanner } from './ToDoBanner';
+import { ToDoRow } from './ToDoRow';
 
 
 // function App() {
@@ -31,13 +31,15 @@ import {ToDoRow} from './ToDoRow';
 
 export default class App extends Component {
   // Above we have created a class called App that extends the functionality of the Component class
-
   // The export keyword makes the class available for use outside the JS file where it is created 
 
   constructor() {
-    //  We are going to create state data for our component. To do that, we need to create a constructor method. This method will get called when an object is created using this class. Said another way, this method will be called when the component is initialized. 
+    //  We are going to create state data for our component. To do that, 
+    //  we need to create a constructor method. This method will get called when an object is created using this class. 
+    //  Said another way, this method will be called when the component is initialized. 
 
-    //  To ensure that we have all the necessary features from React to create a stateful component, we need to call a method called super().  This super() calls the constructor for the {Component} class in react.
+    //  To ensure that we have all the necessary features from React to create a stateful component, 
+    //  we need to call a method called super().  This super() calls the constructor for the {Component} class in react.
     super();
     //React components have a special poroperty called "state" which is used to define the state of data
 
@@ -56,15 +58,32 @@ export default class App extends Component {
 
 
   // Feature 3
-  //  If the ToDoRow Component's "done" property experiences a change event (checking the Done box in the UI) then the ToDoRow component calls a Callback method called toggleTodo (below) and passes toggleTodo the checked todo item
+  //  If the ToDoRow Component's "done" property experiences a change event (checking the Done box in the UI) 
+  //  then the ToDoRow component calls a Callback method called toggleTodo (below) and passes toggleTodo the checked todo item
 
-  todoTableRows = (isTaskDone) => this.state.todoItems.filter( x => x.done == isTaskDone).map( notCompleted => 
-    <ToDoRow 
-      key = {notCompleted.action}
-      item = {notCompleted}
+  todoTableRows = (isTaskDone) => this.state.todoItems.filter(x => x.done == isTaskDone).map(notCompleted =>
+    <ToDoRow
+      key={notCompleted.action}
+      item={notCompleted}
+      callback={this.toggleTodo} // Call back will be invoked(executed, run) when everything in <ToDoRow> is finished
     />
-    )
+  )
 
+
+  // Feature 4
+  //  The toggleTodo method is invoked as a callback when the ToDoRow component has a change event to the "done" property
+  //  .setState allows the data to be updated
+  //  When setState is invoked, React will make a new object with the changes.  Under the hood, 
+  //  React will compare the new object with the DOM version of the object.  If there is a difference between the 2 objects then the DOM will get re-drawn and we see the changes 
+  // the toggleTodo function is invoked as a callback from the <ToDoRow> component
+
+  toggleTodo = (todo) => this.setState(
+    {
+      todoItems: this.state.todoItems.map(
+        item => item.action === todo.action ? { ...item, done: !item.done } : item
+      )
+    }
+  );
 
 
   // When using the lambda syntax the return keyword is not needed
@@ -75,6 +94,7 @@ export default class App extends Component {
         displayName={this.state.userName}
         tasks={this.state.todoItems}
       />
+
 
       {/* Feature 3 */}
       <table className="table table-striped table bordered">
