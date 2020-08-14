@@ -5,6 +5,8 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import { ToDoBanner } from './ToDoBanner';
 import { ToDoRow } from './ToDoRow';
+import { ToDoCreator } from './ToDoCreator';
+
 
 
 // function App() {
@@ -85,6 +87,34 @@ export default class App extends Component {
     }
   );
 
+  // Feature 5a
+
+  //  the method below is a built in react method to handle logic for when the app "mounts" or "loads"
+  componentDidMount = () => {
+    let data = localStorage.getItem("todos");
+    this.setState(
+      data != null ? JSON.parse(data) : {
+        userName: "Billy Bob",
+        todoItems: [
+          { action: "Go Fishing", done: false },
+          { action: "Go hunting", done: false },
+          { action: "Go Camping", done: false }
+        ]
+      }
+    )
+  };
+
+  // Feature 5e
+  // The method below is the callback for the ToDoCreator component
+  createNewTodoCallback = (newTask) => {
+    if (!this.state.todoItems.find(
+      x => x.action === this.state.newItemText)) {
+      this.setState({
+        todoItems: [...this.state.todoItems, { action: newTask, done: false }]
+      }, () => localStorage.setItem("todos", JSON.stringify(this.state)) // END of setItem
+      ); // END of setState
+    }
+  }
 
   // When using the lambda syntax the return keyword is not needed
   render = () =>
@@ -95,6 +125,10 @@ export default class App extends Component {
         tasks={this.state.todoItems}
       />
 
+      {/* Feature 5b */}
+      <ToDoCreator
+        callback={this.createNewTodoCallback}
+      />
 
       {/* Feature 3 */}
       <table className="table table-striped table bordered">
