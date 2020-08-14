@@ -142,6 +142,18 @@ export default class App extends Component {
           {this.todoTableRows(false)}
         </tbody>
       </table>
+
+      <table className="table table-striped table bordered">
+        <thead>
+          <tr className="bg-warning">
+            <th>Description</th>
+            <th>Add Again</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.todoTableRows(true)}
+        </tbody>
+      </table>
     </div>
 }; //END OF APP
 
