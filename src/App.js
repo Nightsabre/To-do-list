@@ -2,7 +2,10 @@ import { Component } from 'react';
 import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import {ToDoBanner} from './ToDoBanner';
+import {ToDoRow} from './ToDoRow';
+
 
 // function App() {
 //   return (
@@ -26,16 +29,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 // }
 
 
-export class ToDoBanner extends Component{
-  render = () =>
-  <h4 className="bg-dark text-white text-center p-2">
-    {this.props.displayName}'s To Do List ({this.props.tasks.filter(
-      x => !x.done).length} items remaining
-    )
-  </h4>
-};
-
-
 export default class App extends Component {
   // Above we have created a class called App that extends the functionality of the Component class
 
@@ -51,25 +44,50 @@ export default class App extends Component {
     this.state = {
       userName: "Logan",
       todoItems: [
-        { action: "Move Burn Pile", done: false },
-        { action: "Mow", done: false },
+        { action: "Practice Guitar", done: false },
+        { action: "Sleep", done: false },
         { action: "Pay Bills", done: true },
         { action: "Play Pokemon", done: false },
-        { action: "Clean", done: false }
+        { action: "Write Code", done: false }
       ]
     }
 
   } // END OF CONSTRUCTOR
 
 
+  // Feature 3
+  //  If the ToDoRow Component's "done" property experiences a change event (checking the Done box in the UI) then the ToDoRow component calls a Callback method called toggleTodo (below) and passes toggleTodo the checked todo item
+
+  todoTableRows = (isTaskDone) => this.state.todoItems.filter( x => x.done == isTaskDone).map( notCompleted => 
+    <ToDoRow 
+      key = {notCompleted.action}
+      item = {notCompleted}
+    />
+    )
+
+
+
   // When using the lambda syntax the return keyword is not needed
   render = () =>
     <div>
-      {/*Feature 1&2 this is a react stub*/}
+      {/* Feature 1&2 this is a react stub */}
       <ToDoBanner
         displayName={this.state.userName}
         tasks={this.state.todoItems}
       />
+
+      {/* Feature 3 */}
+      <table className="table table-striped table bordered">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Completed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.todoTableRows(false)}
+        </tbody>
+      </table>
     </div>
 }; //END OF APP
 
